@@ -1,0 +1,32 @@
+# Application settings. Spring Boot reads this file at startup.
+# Any value here can be overridden by an environment variable later (used for Docker),
+# e.g. SPRING_DATASOURCE_URL overrides spring.datasource.url.
+
+spring:
+  application:
+    name: student-registry
+
+  # ---- PostgreSQL (your local install) ----
+  datasource:
+    url: jdbc:postgresql://localhost:5432/studentdb
+    username: student
+    password: student123
+
+  # ---- Hibernate / JPA ----
+  jpa:
+    hibernate:
+      ddl-auto: update        # Hibernate creates/updates the students table from the Student class
+    show-sql: true            # print every SQL statement Hibernate runs (great for learning)
+    open-in-view: false       # close the DB session when the service method ends (recommended)
+
+  # ---- Kafka ----
+  kafka:
+    bootstrap-servers: localhost:29092   # Kafka container's port for apps outside Docker
+    consumer:
+      group-id: student-registry-group
+      auto-offset-reset: earliest        # a brand-new consumer group reads the topic from the start
+
+server:
+  port: 8080
+  error:
+    include-message: always   # show our error text (e.g. "Email already registered") in error responses
